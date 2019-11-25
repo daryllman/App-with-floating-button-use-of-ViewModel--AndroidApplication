@@ -7,12 +7,18 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CounterViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +27,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton plus_button = findViewById(R.id.plus_button);
+        TextView counterText = findViewById(R.id.counter_text);
+
+
+        mViewModel = ViewModelProviders.of(this).get(CounterViewModel.class);
+
+        mViewModel = new CounterViewModel(0);
+        counterText.setText(mViewModel.getCounter());
+
+
+        final CounterViewModel finalMViewModel = mViewModel;
+
+        plus_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                finalMViewModel.incrementCounter();
             }
         });
     }
